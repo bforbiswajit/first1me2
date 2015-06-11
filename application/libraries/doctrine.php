@@ -88,7 +88,7 @@ class Doctrine {
  
     // Create EntityManager
     $this->em = EntityManager::create($connectionOptions, $config);   
- $this->generate_classes();
+    //$this->generate_classes();
      
   } 
     
@@ -114,7 +114,7 @@ class Doctrine {
     $generator->setUpdateEntityIfExists(true);
     $generator->setGenerateStubMethods(true);
     $generator->setGenerateAnnotations(true);
-    //$generator->generate($metadata, APPPATH."models/Entities");
+    $generator->generate($metadata, APPPATH."models/");
      
   }
 }
