@@ -13,7 +13,7 @@ class Test extends CI_Controller {
     
     public function index()
     {
-        echo "Successfully created Idex Function..";
+        echo "Successfully created Index Function..";
     }
     
     public function create($param = 'danish')
