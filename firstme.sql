@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.3.11
+-- version 4.1.12
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 03, 2015 at 09:38 PM
--- Server version: 5.6.24
--- PHP Version: 5.6.8
+-- Generation Time: Aug 07, 2015 at 03:08 PM
+-- Server version: 5.6.16
+-- PHP Version: 5.5.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -27,13 +27,22 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `admin` (
-  `id` int(5) unsigned NOT NULL,
+  `id` int(5) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(30) NOT NULL,
   `password` varchar(250) NOT NULL,
   `firstName` varchar(20) NOT NULL,
   `lastName` varchar(20) NOT NULL,
-  `status` varchar(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `status` varchar(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`id`, `email`, `password`, `firstName`, `lastName`, `status`) VALUES
+(1, 'demo@demo.com', '13ri7ZYSbl9CA', 'Biswajit', 'Bardhan', '1');
 
 -- --------------------------------------------------------
 
@@ -42,14 +51,15 @@ CREATE TABLE IF NOT EXISTS `admin` (
 --
 
 CREATE TABLE IF NOT EXISTS `category` (
-  `id` int(5) unsigned NOT NULL,
+  `id` int(5) unsigned NOT NULL AUTO_INCREMENT,
   `displayName` varchar(30) NOT NULL,
   `shortDesc` varchar(255) NOT NULL,
   `longDesc` text NOT NULL,
   `createdOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` varchar(1) NOT NULL,
-  `pseudoSubscriptionCount` int(10) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+  `pseudoSubscriptionCount` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `category`
@@ -83,7 +93,10 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `commentsId` int(15) unsigned NOT NULL,
   `userId` int(10) unsigned NOT NULL,
   `dealId` int(10) unsigned NOT NULL,
-  `commentedOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `commentedOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`commentsId`),
+  KEY `userId` (`userId`),
+  KEY `dealId` (`dealId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -93,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
 --
 
 CREATE TABLE IF NOT EXISTS `deals` (
-  `id` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(30) NOT NULL,
   `categoryId` int(5) unsigned DEFAULT NULL,
   `vendorId` int(10) unsigned DEFAULT NULL,
@@ -106,8 +119,11 @@ CREATE TABLE IF NOT EXISTS `deals` (
   `views` int(10) NOT NULL,
   `pseudoViews` int(10) DEFAULT NULL,
   `expiresOn` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `status` varchar(10) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
+  `status` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `categoryId` (`categoryId`),
+  KEY `vendorId` (`vendorId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=37 ;
 
 --
 -- Dumping data for table `deals`
@@ -157,12 +173,14 @@ INSERT INTO `deals` (`id`, `name`, `categoryId`, `vendorId`, `createdOn`, `thumb
 --
 
 CREATE TABLE IF NOT EXISTS `deal_region` (
-  `id` int(20) unsigned NOT NULL,
+  `id` int(20) unsigned NOT NULL AUTO_INCREMENT,
   `dealId` int(10) unsigned NOT NULL,
   `country` varchar(20) NOT NULL,
   `city` varchar(20) NOT NULL,
-  `state` varchar(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+  `state` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `dealregion_ibfk_1` (`dealId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `deal_region`
@@ -177,7 +195,6 @@ INSERT INTO `deal_region` (`id`, `dealId`, `country`, `city`, `state`) VALUES
 (6, 27, 'India', 'Tatanagar', 'Jharkhand'),
 (7, 28, 'India', 'Tembhurni', 'Maharashtra'),
 (8, 29, 'India', 'Kolkata', 'West Bengal'),
-(9, 30, 'India', 'Pune', 'Maharashtra'),
 (10, 31, 'India', 'Thane', 'Maharashtra'),
 (11, 32, 'India', 'Kolhapur', 'Maharashtra'),
 (12, 33, 'India', 'Kolhapur', 'Maharashtra'),
@@ -191,12 +208,15 @@ INSERT INTO `deal_region` (`id`, `dealId`, `country`, `city`, `state`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `seen` (
-  `relationId` int(10) unsigned NOT NULL,
+  `relationId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userId` int(10) unsigned NOT NULL,
   `dealId` int(10) unsigned NOT NULL,
   `favourite` varchar(1) NOT NULL,
-  `rating` int(2) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=latin1;
+  `rating` int(2) NOT NULL,
+  PRIMARY KEY (`relationId`),
+  KEY `userId` (`userId`),
+  KEY `dealId` (`dealId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=68 ;
 
 --
 -- Dumping data for table `seen`
@@ -278,11 +298,14 @@ INSERT INTO `seen` (`relationId`, `userId`, `dealId`, `favourite`, `rating`) VAL
 --
 
 CREATE TABLE IF NOT EXISTS `subscriptions` (
-  `subscriptionId` int(10) unsigned NOT NULL,
+  `subscriptionId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userId` int(10) unsigned NOT NULL,
   `categoryId` int(5) unsigned NOT NULL,
-  `subscribedOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=406 DEFAULT CHARSET=latin1;
+  `subscribedOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`subscriptionId`),
+  KEY `userId` (`userId`),
+  KEY `categoryId` (`categoryId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=406 ;
 
 --
 -- Dumping data for table `subscriptions`
@@ -470,7 +493,7 @@ INSERT INTO `subscriptions` (`subscriptionId`, `userId`, `categoryId`, `subscrib
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
-  `id` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `os` varchar(20) NOT NULL,
   `token` text NOT NULL,
   `firstName` varchar(20) NOT NULL,
@@ -482,8 +505,10 @@ CREATE TABLE IF NOT EXISTS `user` (
   `city` varchar(20) NOT NULL,
   `password` varchar(250) NOT NULL,
   `fbStatus` varchar(1) NOT NULL,
-  `registeredOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+  `registeredOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `user`
@@ -517,13 +542,14 @@ INSERT INTO `user` (`id`, `os`, `token`, `firstName`, `lastName`, `email`, `mobi
 --
 
 CREATE TABLE IF NOT EXISTS `vendor` (
-  `id` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(30) NOT NULL,
   `username` varchar(20) NOT NULL,
   `password` int(250) NOT NULL,
   `lastLogin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `name` varchar(30) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  `name` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `vendor`
@@ -544,7 +570,8 @@ CREATE TABLE IF NOT EXISTS `vendorinfo` (
   `lastName` varchar(20) NOT NULL,
   `businessTitle` varchar(60) NOT NULL,
   `desc` varchar(255) NOT NULL,
-  `registeredOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `registeredOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`vendorId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -555,114 +582,6 @@ INSERT INTO `vendorinfo` (`vendorId`, `firstName`, `lastName`, `businessTitle`, 
 (1, 'Biswajit', 'Bardhan', 'Technokratz', 'Software Development', '2015-07-05 10:11:05');
 
 --
--- Indexes for dumped tables
---
-
---
--- Indexes for table `admin`
---
-ALTER TABLE `admin`
-  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `email` (`email`);
-
---
--- Indexes for table `category`
---
-ALTER TABLE `category`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `comments`
---
-ALTER TABLE `comments`
-  ADD PRIMARY KEY (`commentsId`), ADD KEY `userId` (`userId`), ADD KEY `dealId` (`dealId`);
-
---
--- Indexes for table `deals`
---
-ALTER TABLE `deals`
-  ADD PRIMARY KEY (`id`), ADD KEY `categoryId` (`categoryId`), ADD KEY `vendorId` (`vendorId`);
-
---
--- Indexes for table `deal_region`
---
-ALTER TABLE `deal_region`
-  ADD PRIMARY KEY (`id`), ADD KEY `dealregion_ibfk_1` (`dealId`);
-
---
--- Indexes for table `seen`
---
-ALTER TABLE `seen`
-  ADD PRIMARY KEY (`relationId`), ADD KEY `userId` (`userId`), ADD KEY `dealId` (`dealId`);
-
---
--- Indexes for table `subscriptions`
---
-ALTER TABLE `subscriptions`
-  ADD PRIMARY KEY (`subscriptionId`), ADD KEY `userId` (`userId`), ADD KEY `categoryId` (`categoryId`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `email` (`email`);
-
---
--- Indexes for table `vendor`
---
-ALTER TABLE `vendor`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `vendorinfo`
---
-ALTER TABLE `vendorinfo`
-  ADD PRIMARY KEY (`vendorId`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `admin`
---
-ALTER TABLE `admin`
-  MODIFY `id` int(5) unsigned NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `category`
---
-ALTER TABLE `category`
-  MODIFY `id` int(5) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
---
--- AUTO_INCREMENT for table `deals`
---
-ALTER TABLE `deals`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=36;
---
--- AUTO_INCREMENT for table `deal_region`
---
-ALTER TABLE `deal_region`
-  MODIFY `id` int(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
---
--- AUTO_INCREMENT for table `seen`
---
-ALTER TABLE `seen`
-  MODIFY `relationId` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=68;
---
--- AUTO_INCREMENT for table `subscriptions`
---
-ALTER TABLE `subscriptions`
-  MODIFY `subscriptionId` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=406;
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=21;
---
--- AUTO_INCREMENT for table `vendor`
---
-ALTER TABLE `vendor`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
 -- Constraints for dumped tables
 --
 
@@ -670,41 +589,41 @@ ALTER TABLE `vendor`
 -- Constraints for table `comments`
 --
 ALTER TABLE `comments`
-ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`dealId`) REFERENCES `deals` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`dealId`) REFERENCES `deals` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `deals`
 --
 ALTER TABLE `deals`
-ADD CONSTRAINT `deals_ibfk_1` FOREIGN KEY (`categoryId`) REFERENCES `category` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-ADD CONSTRAINT `deals_ibfk_2` FOREIGN KEY (`vendorId`) REFERENCES `vendor` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `deals_ibfk_1` FOREIGN KEY (`categoryId`) REFERENCES `category` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `deals_ibfk_2` FOREIGN KEY (`vendorId`) REFERENCES `vendor` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `deal_region`
 --
 ALTER TABLE `deal_region`
-ADD CONSTRAINT `deal_region_ibfk_1` FOREIGN KEY (`dealId`) REFERENCES `deals` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `dealregion_ibfk_1` FOREIGN KEY (`dealId`) REFERENCES `deals` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `seen`
 --
 ALTER TABLE `seen`
-ADD CONSTRAINT `seen_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `seen_ibfk_2` FOREIGN KEY (`dealId`) REFERENCES `deals` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `seen_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `seen_ibfk_2` FOREIGN KEY (`dealId`) REFERENCES `deals` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `subscriptions`
 --
 ALTER TABLE `subscriptions`
-ADD CONSTRAINT `subscriptions_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `subscriptions_ibfk_2` FOREIGN KEY (`categoryId`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `subscriptions_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `subscriptions_ibfk_2` FOREIGN KEY (`categoryId`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `vendorinfo`
 --
 ALTER TABLE `vendorinfo`
-ADD CONSTRAINT `vendorinfo_ibfk_1` FOREIGN KEY (`vendorId`) REFERENCES `vendor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `vendorinfo_ibfk_1` FOREIGN KEY (`vendorId`) REFERENCES `vendor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
