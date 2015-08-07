@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.12
+-- version 4.0.10deb1
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Aug 07, 2015 at 03:08 PM
--- Server version: 5.6.16
--- PHP Version: 5.5.11
+-- Host: localhost
+-- Generation Time: Aug 07, 2015 at 01:33 PM
+-- Server version: 5.5.43-0ubuntu0.14.04.1
+-- PHP Version: 5.5.9-1ubuntu4.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
 --
 
 INSERT INTO `admin` (`id`, `email`, `password`, `firstName`, `lastName`, `status`) VALUES
-(1, 'demo@demo.com', '13ri7ZYSbl9CA', 'Biswajit', 'Bardhan', '1');
+(1, 'demo@demo.com', '13ri7ZYSbl9CA', 'Demo', 'TestUser', '1');
 
 -- --------------------------------------------------------
 
@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `deals` (
 
 INSERT INTO `deals` (`id`, `name`, `categoryId`, `vendorId`, `createdOn`, `thumbnailImg`, `bigImg`, `shortDesc`, `longDesc`, `likes`, `views`, `pseudoViews`, `expiresOn`, `status`) VALUES
 (1, 'Demo Deal', 1, 1, '2015-07-05 10:12:14', '/public/images/deal/thumb/1.png', '/public/images/deal/big/1.png', 'Lorem ipsum dolor sit amet, consectetur', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 0, 22, NULL, '2015-07-06 00:00:00', '1'),
-(2, 'Customize Your Car Looks', 4, 1, '2015-07-13 20:23:52', '/public/images/deal/thumb/2.png', '/public/images/deal/big/2.png', 'Lorem ipsum dolor sit amet', 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.', 0, 15, 0, '2015-08-20 00:00:00', '1'),
+(2, 'Customize Your Car Looks', 4, 1, '2015-07-13 20:23:52', '/public/images/deal/thumb/2.png', '/public/images/deal/big/2.png', 'Lorem ipsum dolor sit amet', 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.', 0, 19, 0, '2015-08-20 00:00:00', '1'),
 (3, 'Low cost used cars', 4, 1, '2015-07-13 20:23:59', '/public/images/deal/thumb/3.png', '/public/images/deal/big/3.png', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.', 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.', 0, 1, 0, '2015-07-20 00:00:00', '1'),
 (4, 'Grab your Galaxy S6', 8, 1, '2015-07-13 21:30:59', '/public/images/deal/thumb/4.png', '/public/images/deal/big/4.png', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.', 0, 9, 0, '2015-08-15 00:00:00', '1'),
 (5, 'Seagate 1TB portable HDD @4000', 10, 1, '2015-07-13 21:43:48', '/public/images/deal/thumb/5.png', '/public/images/deal/big/5.png', 'Duis aute irure in voluptate velit. uis aute irure.', 'Laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.', 0, 4, 0, '2015-07-31 00:00:00', '1'),
@@ -149,22 +149,7 @@ INSERT INTO `deals` (`id`, `name`, `categoryId`, `vendorId`, `createdOn`, `thumb
 (17, '15% Off @ Low Land', 7, 1, '2015-07-21 01:03:50', '/public/images/deal/thumb/17.png', '/public/images/deal/big/17.png', 'Lorem ipsum dolor sit amet, consectetur', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.', 0, 7, 0, '2015-08-03 00:00:00', '1'),
 (18, 'Gym Instruments upto 45% off', 12, 1, '2015-07-23 09:04:27', '/public/images/deal/thumb/18.jpg', '/public/images/deal/big/18.jpg', 'Lorem ipsum dolor sit amet, lit, sed do eiusmod.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.', 0, 2, 0, '2015-07-31 00:00:00', '1'),
 (19, 'Apple Desktop', 10, 1, '2015-07-24 17:17:33', '/public/images/deal/thumb/19.jpg', '/public/images/deal/big/19.jpg', '15% off on all desktop', 'Buy today and get flat 15% OFF an all Apple desktop at Chroma. \r\nAlso win Exciting gift vouchers and goodies.\r\n*Conditions Apply', 0, 2, 0, '2015-07-26 00:00:00', '1'),
-(20, 'Ray-ban Sunglasses', 9, 1, '2015-07-24 17:21:39', '/public/images/deal/thumb/20.jpg', '/public/images/deal/big/20.jpg', 'End of Season - FLAT 25% on Sunglasses', 'Valid only for weekend.\r\n End of Season - F L A T 25% on Ray-ban Sunglasses', 0, 3, 0, '2015-08-01 00:00:00', '1'),
-(21, 'Demo Deal', 6, 1, '2015-08-03 17:35:20', '/public/images/deal/thumb/21.jpg', '/public/images/deal/big/21.jpg', 'Test', 'Demo description', 0, 0, 0, '2015-10-02 18:30:00', '1'),
-(22, 'test', 9, 1, '2015-08-03 17:41:28', '/public/images/deal/thumb/default.png', '/public/images/deal/big/default.png', 'demo', 'demo', 0, 0, 0, '2015-10-02 18:30:00', '1'),
-(23, 'test', 9, 1, '2015-08-03 17:53:46', '/public/images/deal/thumb/23.jpg', '/public/images/deal/big/23.jpg', 'demo', 'demo', 0, 0, 0, '2015-10-02 18:30:00', '1'),
-(24, 'demo', 2, 1, '2015-08-03 18:03:12', '/public/images/deal/thumb/24.png', '/public/images/deal/big/24.png', 'demo', 'demo', 0, 0, 0, '2015-09-04 18:30:00', '1'),
-(25, 'demo', 1, 1, '2015-08-03 18:37:48', '/public/images/deal/thumb/25.jpg', '/public/images/deal/big/25.jpg', 'demo', 'demo', 0, 0, 0, '2015-09-03 18:30:00', '1'),
-(26, 'demo', 1, 1, '2015-08-03 18:39:59', '/public/images/deal/thumb/26.jpg', '/public/images/deal/big/26.jpg', 'demo', 'demo', 0, 0, 0, '2015-09-03 18:30:00', '1'),
-(27, 'demo', 1, 1, '2015-08-03 18:42:03', '/public/images/deal/thumb/27.jpg', '/public/images/deal/big/27.jpg', 'demo', 'demo', 0, 0, 0, '2015-09-03 18:30:00', '1'),
-(28, 'gcm test', 1, 1, '2015-08-03 18:43:20', '/public/images/deal/thumb/28.jpg', '/public/images/deal/big/28.jpg', 'test', 'test', 0, 0, 0, '2015-09-03 18:30:00', '1'),
-(29, 'oijfo', 1, 1, '2015-08-03 18:46:13', '/public/images/deal/thumb/29.jpg', '/public/images/deal/big/29.jpg', 'dfj', 'osijfg', 0, 0, 0, '2015-08-28 18:30:00', '1'),
-(30, 'asdfasfd', 1, 1, '2015-08-03 19:08:09', '/public/images/deal/thumb/30.jpg', '/public/images/deal/big/30.jpg', 'asfasf', 'asdfasf', 0, 0, 0, '2015-09-01 18:30:00', '1'),
-(31, 'demo', 2, 1, '2015-08-03 19:10:50', '/public/images/deal/thumb/31.png', '/public/images/deal/big/31.png', 'demo', 'demo', 0, 0, 0, '2015-09-03 18:30:00', '1'),
-(32, 'demo', 3, 1, '2015-08-03 19:13:11', '/public/images/deal/thumb/32.jpg', '/public/images/deal/big/32.jpg', 'kbkbkbkb', 'jhkjkb', 0, 0, 0, '2015-09-04 18:30:00', '1'),
-(33, 'demo', 3, 1, '2015-08-03 19:13:38', '/public/images/deal/thumb/33.jpg', '/public/images/deal/big/33.jpg', 'kbkbkbkb', 'jhkjkb', 0, 0, 0, '2015-09-04 18:30:00', '1'),
-(34, 'demo', 16, 1, '2015-08-03 19:15:59', '/public/images/deal/thumb/34.jpg', '/public/images/deal/big/34.jpg', 'kbkbkbkb', 'jhkjkb', 0, 0, 0, '2015-09-04 18:30:00', '1'),
-(35, 'demo', 16, 1, '2015-08-03 19:17:03', '/public/images/deal/thumb/35.jpg', '/public/images/deal/big/35.jpg', 'kbkbkbkb', 'jhkjkb', 0, 0, 0, '2015-09-04 18:30:00', '1');
+(20, 'Ray-ban Sunglasses', 9, 1, '2015-07-24 17:21:39', '/public/images/deal/thumb/20.jpg', '/public/images/deal/big/20.jpg', 'End of Season - FLAT 25% on Sunglasses', 'Valid only for weekend.\r\n End of Season - F L A T 25% on Ray-ban Sunglasses', 0, 3, 0, '2015-08-01 00:00:00', '1');
 
 -- --------------------------------------------------------
 
@@ -180,26 +165,33 @@ CREATE TABLE IF NOT EXISTS `deal_region` (
   `state` varchar(20) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `dealregion_ibfk_1` (`dealId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
 
 --
 -- Dumping data for table `deal_region`
 --
 
 INSERT INTO `deal_region` (`id`, `dealId`, `country`, `city`, `state`) VALUES
-(1, 21, 'India', 'Kolkata', 'West Bengal'),
-(2, 23, 'India', 'Pune', 'Maharashtra'),
-(3, 24, '', 'Delhi', 'India'),
-(4, 25, 'India', 'Tatanagar', 'Jharkhand'),
-(5, 26, 'India', 'Tatanagar', 'Jharkhand'),
-(6, 27, 'India', 'Tatanagar', 'Jharkhand'),
-(7, 28, 'India', 'Tembhurni', 'Maharashtra'),
-(8, 29, 'India', 'Kolkata', 'West Bengal'),
-(10, 31, 'India', 'Thane', 'Maharashtra'),
-(11, 32, 'India', 'Kolhapur', 'Maharashtra'),
-(12, 33, 'India', 'Kolhapur', 'Maharashtra'),
-(13, 34, 'India', 'Kolhapur', 'Maharashtra'),
-(14, 35, 'India', 'Kolhapur', 'Maharashtra');
+(16, 1, 'India', 'Pune', 'Maharashtra'),
+(17, 2, 'India', 'Pune', 'Maharashtra'),
+(18, 3, 'India', 'Pune', 'Maharashtra'),
+(19, 4, 'India', 'Pune', 'Maharashtra'),
+(20, 5, 'India', 'Pune', 'Maharashtra'),
+(21, 6, 'India', 'Pune', 'Maharashtra'),
+(22, 7, 'India', 'Pune', 'Maharashtra'),
+(23, 8, 'India', 'Pune', 'Maharashtra'),
+(24, 9, 'India', 'Pune', 'Maharashtra'),
+(25, 10, 'India', 'Pune', 'Maharashtra'),
+(26, 11, 'India', 'Pune', 'Maharashtra'),
+(27, 12, 'India', 'Pune', 'Maharashtra'),
+(28, 13, 'India', 'Pune', 'Maharashtra'),
+(29, 14, 'India', 'Pune', 'Maharashtra'),
+(30, 15, 'India', 'Pune', 'Maharashtra'),
+(31, 16, 'India', 'Pune', 'Maharashtra'),
+(32, 17, 'India', 'Pune', 'Maharashtra'),
+(33, 18, 'India', 'Pune', 'Maharashtra'),
+(34, 19, 'India', 'Pune', 'Maharashtra'),
+(35, 20, 'India', 'Pune', 'Maharashtra');
 
 -- --------------------------------------------------------
 
@@ -532,7 +524,7 @@ INSERT INTO `user` (`id`, `os`, `token`, `firstName`, `lastName`, `email`, `mobi
 (15, 'Android', '12345', 'Milind', 'Katakdound', 'sunil02.katakdound@gmail.com', '9421058940', 'India', '', 'Pune', '28erUYQjwNPek', '0', '2015-07-26 23:45:15'),
 (16, 'Android', 'dW5DKwQceZw:APA91bGlxf3JfXR8XTo6UKKuE73QJ6qbT1CrvT-nMjj-UKf68ylUXncq9R77zxOzDtZFgymHRe9cMMZ9zyGIJf1BbFF1wn6Gl0_dCsIa_SesMYjLKkrcHXs4yAl-9etu9L9EfNzZKXPs', 'Tushar', 'Katakdound', 'tushar02.katakdound@technokrat', '8983472919', 'India', '', 'Pune', '35saZ1IJNhQ8Y', '0', '2015-07-28 02:20:49'),
 (17, 'Android', 'eCvXZn7srXM:APA91bED0E79uUcHBWKURKSXQIFScuPuTUE5TBg6uhssPeMK4Uj2I_BBk7AgUcqJxAt6kgcZ0xwbQEXtaiQ2eAnuneCiN58NNwEnuhj9lsUmy1CV-uyNIQO1FHJn2l4viNYI8hW_mR50', 'Tushar', 'Katakdound', 'king.katakdound@technokratz.co', '8983472919', 'India', '', 'Pune', '31QVoY8q4ORsA', '0', '2015-07-28 22:34:51'),
-(18, 'Android', 'fexKWPwqHG8:APA91bEyBJ_HdN49wyHRWQnkr9vdnTjOrNURTFXWJslf7JG-ea89t7I_JPaHT3100M8L6pYlMu7qf9KjJ1fa2SozTFN_8CFW2izlml1Qm9tih-FOd1y9_HSzbmtTAuhDnMK45xmHZhUX', 'Tushar', 'Katakdound', 'asd123@gmail.com', '8983472919', 'India', '', 'Pune', '16wmi9Sjo68Mo', '0', '2015-07-29 00:02:52'),
+(18, 'Android', 'fexKWPwqHG8:APA91bEyBJ_HdN49wyHRWQnkr9vdnTjOrNURTFXWJslf7JG-ea89t7I_JPaHT3100M8L6pYlMu7qf9KjJ1fa2SozTFN_8CFW2izlml1Qm9tih-FOd1y9_HSzbmtTAuhDnMK45xmHZhUX', 'Tushar', 'Katakdound', 'asd123@gmail.com', '8983472919', 'India', 'Maharashtra', 'Pune', '16wmi9Sjo68Mo', '0', '2015-07-29 00:02:52'),
 (20, 'Android 5', 'fexKWPwqHG8:APA91bEyBJ_HdN49wyHRWQnkr9vdnTjOrNURTFXWJslf7JG-ea89t7I_JPaHT3100M8L6pYlMu7qf9KjJ1fa2SozTFN_8CFW2izlml1Qm9tih-FOd1y9_HSzbmtTAuhDnMK45xmHZhUX', 'Shritesh', 'Avlani', 'shritesh.avlani@example.com', '3214569870', 'India', 'Gujrat', 'Gandhinagar', '27CTA8PEUosXA', '0', '2015-08-03 19:29:27');
 
 -- --------------------------------------------------------
