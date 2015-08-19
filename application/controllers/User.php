@@ -103,4 +103,37 @@ class User extends CI_Controller
         $this->load->model('User_model');
         echo json_encode($this->User_model->Login($email, $password));
     }
+    
+    public function ChangeCity(){
+        if(preg_match("/[0-9]{1,10}/", $userId = isset($_POST['userId']) ? intval(trim($_POST['userId'])) : "") == 0)
+        {
+            echo json_encode(array("status" => "error", "message" => array("Title" => "Invalid User ID.", "Code" => "400")));
+            exit;
+        }
+        
+        if(preg_match("/[a-zA-Z]{1,20}/", $country = isset($_POST['country']) ? trim($_POST['country']) : "") == 0)
+        {
+            echo json_encode(array("status" => "error", "message" => array("Title" => "Invalid Country Name.", "Code" => "400")));
+            exit;
+        }
+        
+        if(preg_match("/[a-zA-Z]{1,20}/", $state = isset($_POST['state']) ? trim($_POST['state']) : "") == 0)
+        {
+            echo json_encode(array("status" => "error", "message" => array("Title" => "Invalid State Name.", "Code" => "400")));
+            exit;
+        }
+        
+        if(preg_match("/[a-zA-Z]{1,20}/", $city = isset($_POST['city']) ? trim($_POST['city']) : "") == 0)
+        {
+            echo json_encode(array("status" => "error", "message" => array("Title" => "Invalid City Name.", "Code" => "400")));
+            exit;
+        }
+        
+        $fieldsToUpdate['country'] = $country;
+        $fieldsToUpdate['state'] = $state;
+        $fieldsToUpdate['city'] = $city;
+        
+        $this->load->model('User_model');
+        echo json_encode($this->User_model->UpdateCity($userId, $fieldsToUpdate));
+    }
 }

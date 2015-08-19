@@ -86,4 +86,17 @@ class User_model extends CI_Model
             return array("status" => "error", "message" => array("Title" => "User not found.", "Code" => "401"));
         
     }
+    
+    public function UpdateCity($userId, $fieldsToUpdate){
+        $deal = new Entities\User;
+        try
+        {
+            $this->db->update('user', $fieldsToUpdate, array("id" => $userId));
+            return array("status" => "success", "data" => array("City Updated Successfully."));
+        }
+        catch(Exception $exc)
+        {
+            return array("status" => "error", "message" => array("Title" => $exc->getTraceAsString(), "Code" => "503"));
+        }
+    }
 }
