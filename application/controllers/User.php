@@ -57,7 +57,7 @@ class User extends CI_Controller
             exit;
         }
         
-        if(preg_match("/[a-zA-Z0-9\'\"\s\.\,\-\+\/\\\]{4,250}/", $password = isset($_POST['password']) ? trim($_POST['password']) : "") == 0)
+        if(preg_match("/[a-zA-Z0-9_\@\'\"\s\.\,\-\+\/\\\]{4,250}/", $password = isset($_POST['password']) ? trim($_POST['password']) : "") == 0)
         {
             echo json_encode(array("status" => "error", "message" => array("Title" => "Invalid Password.", "Code" => "400")));
             exit;
@@ -135,5 +135,39 @@ class User extends CI_Controller
         
         $this->load->model('User_model');
         echo json_encode($this->User_model->UpdateCity($userId, $fieldsToUpdate));
+    }
+    
+    public function ChangePassword() {
+        if(preg_match("/^[a-z][a-z0-9\.\_]*@[a-z][a-z0-9\.]+[a-z]$/", $email = isset($_POST['email']) ? trim($_POST['email']) : "") == 0)
+        {
+            echo json_encode(array("status" => "error", "message" => array("Title" => "Invalid Email Address.", "Code" => "400")));
+            exit;
+        }
+        
+        if(preg_match("/[a-zA-Z0-9_\@\'\"\s\.\,\-\+\/\\\]{4,250}/", $oldPassword = isset($_POST['oldPassword']) ? trim($_POST['oldPassword']) : "") == 0)
+        {
+            echo json_encode(array("status" => "error", "message" => array("Title" => "Invalid Old Password.", "Code" => "400")));
+            exit;
+        }
+        
+        if(preg_match("/[a-zA-Z0-9_\@\'\"\s\.\,\-\+\/\\\]{4,250}/", $newPassword = isset($_POST['newPassword']) ? trim($_POST['newPassword']) : "") == 0)
+        {
+            echo json_encode(array("status" => "error", "message" => array("Title" => "Invalid New Password.", "Code" => "400")));
+            exit;
+        }
+        
+        $this->load->model('User_model');
+        echo json_encode($this->User_model->UpdatePassword($email, $oldPassword, $newPassword));
+    }
+    
+    public function ForgetPassword() {
+        if(preg_match("/^[a-z][a-z0-9\.\_]*@[a-z][a-z0-9\.]+[a-z]$/", $email = isset($_POST['email']) ? trim($_POST['email']) : "") == 0)
+        {
+            echo json_encode(array("status" => "error", "message" => array("Title" => "Invalid Email Address.", "Code" => "400")));
+            exit;
+        }
+        
+        $this->load->model('User_model');
+        echo json_encode($this->User_model->UpdatePassword($email));
     }
 }

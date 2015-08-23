@@ -77,7 +77,15 @@ class User_model extends CI_Model
         {
             if(crypt($password, strlen($email)) == $thisUser->getPassword())
             {
-                return array("status" => "success", "data" => array("Logged in Successfully.", "userId" => $thisUser->getId()));
+                $profile['firstName'] = $thisUser->getFirstname();
+                $profile['lastName'] = $thisUser->getLastname();
+                $profile['os'] = $thisUser->getOs();
+                $profile['email'] = $thisUser->getEmail();
+                $profile['mobile'] = $thisUser->getMobile();
+                $profile['country'] = $thisUser->getCountry();
+                $profile['state'] = $thisUser->getState();
+                $profile['city'] = $thisUser->getCity();
+                return array("status" => "success", "data" => array("Logged in Successfully.", "userId" => $thisUser->getId(), "profile" => $profile));
             }
             else
                 return array("status" => "error", "message" => array("Title" => "Email / Password mismatch.", "Code" => "401"));
@@ -98,5 +106,46 @@ class User_model extends CI_Model
         {
             return array("status" => "error", "message" => array("Title" => $exc->getTraceAsString(), "Code" => "503"));
         }
+    }
+    
+    public function UpdatePassword($email, $oldPassword = "", $newPassword = ""){
+        $thisUser = $this->doctrine->em->getRepository('Entities\User')->findOneBy(array('email' => $email));
+        
+        if($thisUser != NULL)
+        {
+            if($oldPassword != ""){     //Change Password
+                if(crypt($oldPassword, strlen($email)) == $thisUser->getPassword())
+                {
+                    $cryptedPassword = crypt($newPassword, strlen($email));
+                    $this->db->update('user',array("password" => $cryptedPassword), array("id" => $thisUser->getId()));
+                }
+                else
+                    return array("status" => "error", "message" => array("Title" => "Sorry, Password Didn't Match.", "Code" => "401"));
+            }
+            else{                       //Forget Password
+                $newPassword = chr(rand(97,122)) . chr(rand(97,122)) . chr(rand(97,122)) . rand(0,9) . rand(0,9) . rand(0,9);
+                $cryptedPassword = crypt($newPassword, strlen($email));
+                $this->db->update('user',array("password" => $cryptedPassword), array("id" => $thisUser->getId()));
+            }
+            
+            $this->load->library('email');
+            $this->email->set_mailtype("html");
+            $this->email->from('admin@firstme.com', 'FirstMe Team');
+            $this->email->to($email); 
+            $this->email->cc('admin@sathiplanners.com'); 
+            $this->email->bcc('sunshine.cst.07@gmail.com'); 
+
+            $this->email->subject('First Me Password Update');
+            $message = "Hi " . $thisUser->getFirstname() . ",<br/>Your Password has been changed successfully."
+                    . "\nYour Current Credentials are as follows<br/>"
+                    . "<table><tr style='background-color: blue; color: white;'><td>Email</td><td>Password</td></tr><tr style='background-color: #3399FF;'><td>" . $email . "</td><td>" . $newPassword . "</td></tr></table>";
+            $this->email->message($message);	
+
+            $this->email->send();
+            
+            return array("status" => "success", "data" => array("Password Updated Successfully, and an email has been sent with the new credentials. $newPassword"));
+        }
+        else
+            return array("status" => "error", "message" => array("Title" => "Sorry, User not found.", "Code" => "401"));
     }
 }
