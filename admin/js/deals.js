@@ -12,7 +12,18 @@ $(document).ready(function(){
           "bInfo": true,
           "bAutoWidth": false
         });
-      });
+    });
+    
+    /*$('#region').textext({
+        plugins : 'tags prompt focus autocomplete ajax arrow',
+        tagsItems : [ 'Basic', 'JavaScript', 'PHP', 'Scala' ],
+        prompt : 'Add one...',
+        ajax : {
+            url : '/Places/GetCities',
+            dataType : 'json',
+            cacheResults : true
+        }
+    });*/
     
     function getStatusButton(status){
         if(status == 0)

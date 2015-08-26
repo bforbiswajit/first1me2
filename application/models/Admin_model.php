@@ -20,7 +20,7 @@ class Admin_model extends CI_Model
             return array("status" => "error", "message" => array("Title" => "Invalid Email.", "Code" => "503"));
 
         if(crypt($password, strlen($email)) != $user->getPassword())
-            return array("status" => "error", "message" => array("Title" => "Email/Password mismatch. Try again", "Code" => "503"));
+            return array("status" => "error", "message" => array("Title" => "Email/Password mismatch. Try again", "Code" => "401"));
         else{
             $_SESSION['adminId'] = $user->getId();
             return array("status" => "success", "data" => array("Logged in Successfully."));

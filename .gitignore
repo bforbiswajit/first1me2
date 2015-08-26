@@ -1,5 +1,5 @@
-nbproject/*
-application/models/Entities/*.*
+nbproject/
+application/models/Entities/
 vendor/*
 system/*
 public/images/deal/*
