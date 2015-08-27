@@ -38,13 +38,16 @@ class Deals_model extends CI_Model
     
     public function CreateDeals($name, $categoryId, $vendorId, $region, $shortDesc, $longDesc, $likes, $views, $pseudoViews, $expiresOn, $status){
         //return array("status" => "error", "message" => array("Title" => $region, "Code" => "404"));
-        $region = json_decode($region);
+        $region = array_unique(json_decode($region));
+        if(count($region) == 0)
+            return array("status" => "error", "message" => array("Title" => "Please Enter Some City.", "Code" => "401"));
+        
         $category = $this->em->getRepository('Entities\Category')->find($categoryId);
         $vendor = $this->em->getRepository('Entities\Vendor')->find($vendorId);
         if($category == NULL)
-            return array("status" => "error", "message" => array("Title" => "Category not found.", "Code" => "404"));
+            return array("status" => "error", "message" => array("Title" => "Category not found.", "Code" => "401"));
         if($vendor == NULL)
-            return array("status" => "error", "message" => array("Title" => "Vendor not found.", "Code" => "404"));
+            return array("status" => "error", "message" => array("Title" => "Vendor not found.", "Code" => "401"));
         
         //var_dump(new \DateTime((string)$expiresOn));exit;
         $deals = new Entities\Deals;

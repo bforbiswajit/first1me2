@@ -12,10 +12,14 @@ $(document).ready(function(){
         headers : {"Api-Key": "1234"},
 
         success : function(data){
-            data = JSON.parse(data);
-            //console.log(data);
-            if(data.status == "success")
-                window.location("dashboard.html");
+            try{
+                data = JSON.parse(data);
+                //console.log(data);
+                if(data.status == "success")
+                    window.location.href = "dashboard.html";
+            }catch(ex){
+                console.log("Exception Occured.");
+            }
         },
         error : function(XMLHttpRequest, textStatus, errorThrown){ 
             console.log("Status: " + textStatus + ", Error: " + errorThrown); 
@@ -40,15 +44,20 @@ $(document).ready(function(){
             data : form_data,
             success : function(data){
                 console.log(data);
-                response = JSON.parse(data);
-                if(response.status == "success"){
-                    //console.log(response.data[0]);
-                    $(form_id + "_success").text(response.data[0]).fadeIn(2000).fadeOut(2000);
+                try{
+                    response = JSON.parse(data);
+                    if(response.status == "success"){
+                        //console.log(response.data[0]);
+                        $(form_id + "_success").text(response.data[0]).fadeIn(2000);
+                        window.location.href = "dashboard.html";
+                    }
+                    else{
+                        $(form_id + "_danger").text("Error Code #" + response.message.Code + ", " + response.message.Title).fadeIn(2000);
+                    }
+                    $(form_id + "input[type='reset']").trigger("click");
+                }catch(ex){
+                    console.log("Exception Occured. Please Try Again After Sometime. " + ex);
                 }
-                else{
-                    $(form_id + "_danger").text("Error Code #" + response.message.Code + ", " + response.message.Title).fadeIn(2000);
-                }
-                $(form_id + "input[type='reset']").trigger("click");
             },
            
             error : function(XMLHttpRequest, textStatus, errorThrown){ 

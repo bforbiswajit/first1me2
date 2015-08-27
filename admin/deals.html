@@ -125,10 +125,10 @@
             </div><!-- /.box-header -->
             <div class="box-body">
                 <div class="alert alert-success alert-dismissable" role="alert" id="dealsAddForm_success" style="display: none;">
-                    <!--button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button-->
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                 </div>
                 <div class="alert alert-danger alert-dismissable" role="alert" id="dealsAddForm_danger" style="display: none;">
-                    <!--button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button-->
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                 </div>
                 <form id="dealsAddForm" action="/Deals/Add" enctype="multipart/form-data">
                     <div class="modal-body" style="width: 50%; margin-left: 10%;">
@@ -167,10 +167,10 @@
                         </div><br/>
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon1">Region</span>
-                            <input type="text" class="form-control" placeholder="Enter City Here." aria-describedby="basic-addon1" id="region" list="regionList">
-                            <span class="input-group-addon" id="addToTextext" style="cursor: pointer;"><i class="fa fa-plus-circle"></i> Add</span>
+                            <input type="text" class="form-control" placeholder="Type City Name And Click On The Add Button." aria-describedby="basic-addon1" id="region" list="regionList">
+                            <span class="input-group-addon" id="addToTextext" style="cursor: pointer;"><i class="fa fa-plus-circle" style="color: green;"></i> Add</span>
                             <datalist id="regionList"></datalist>
-                        </div><textarea id="regionTextext" rows="5" cols="83" name="region" style="background-color: #FFFFF7;" readonly="true"></textarea><br/>
+                        </div><textarea id="regionTextext" rows="1" cols="83" name="region" style="border: 0px;" readonly></textarea><br/>
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon1">Expires On</span>
                             <input type="date" class="form-control" aria-describedby="basic-addon1" name="expiresOn" required>

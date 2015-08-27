@@ -20,7 +20,6 @@ $(document).ready(function(){
     {
             $('#regionTextext').textext()[0].tags().addTags([ $('#region').val() ]);
             $('#region').val('');
-            console.log("here");
     });
     /*$('#region').textext({
         plugins : 'tags prompt focus autocomplete ajax arrow',
@@ -167,17 +166,21 @@ $(document).ready(function(){
                     data : {"countryCode" : "IN", "input" : suggestion_prefix},
 
                     success : function(data){
-                        response = JSON.parse(data);
-                        if(response.status == "success"){
-                            //console.log(response.data);
-                            $("#regionList").empty();
-                            for(var i=0; i<response.data.length; i++)
-                            {
-                                $("#regionList").append("<option value='" + response.data[i] + "'>");
+                        try{
+                            response = JSON.parse(data);
+                            if(response.status == "success"){
+                                //console.log(response.data);
+                                $("#regionList").empty();
+                                for(var i=0; i<response.data.length; i++)
+                                {
+                                    $("#regionList").append("<option value='" + response.data[i] + "'>");
+                                }
                             }
+                            else
+                                console.log("Error : ", data);
+                        }catch(ex){
+                            console.log("Nothing Found.");
                         }
-                        else
-                            console.log("Error : ", data);
                     },
 
                     error : function(XMLHttpRequest, textStatus, errorThrown){ 
@@ -214,7 +217,7 @@ $(document).ready(function(){
                     dealStat();
                 }
                 else{
-                    $(form_id + "_danger").text("Error Code #" + response.message.Code + ", " + response.message.Title);
+                    $(form_id + "_danger").text("Error Code #" + response.message.Code + ", " + response.message.Title).fadeIn(2000);
                 }
                 $("html, body").animate({ scrollTop: 0 }, "slow");
                 $(form_id + "input[type='reset']").trigger("click");

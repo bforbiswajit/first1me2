@@ -15,8 +15,10 @@ class Admin extends CI_Controller
     }
     
     public function Login(){
-        if(isset($_SESSION['adminId']) && $_SESSION['adminId'] != "")
-            return array("status" => "success", "data" => array("Already Logged in."));
+        if(isset($_SESSION['adminId']) && $_SESSION['adminId'] != ""){
+            echo json_encode(array("status" => "success", "data" => array("Already Logged in.")));
+            return;
+        }
         
         if(preg_match("/^[a-z][a-z0-9\.\_]*@[a-z][a-z0-9\.]+[a-z]$/", $email = isset($_POST['email']) ? trim($_POST['email']) : "") == 0)
         {
@@ -37,5 +39,9 @@ class Admin extends CI_Controller
     public function Logout(){
         session_destroy();
         echo json_encode(array("status" => "success", "data" => array("Logged Out Successfully.")));
+    }
+    
+    public function CheckSession(){
+        print_r($_SESSION);
     }
 }
