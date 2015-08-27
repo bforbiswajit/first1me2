@@ -14,6 +14,14 @@ $(document).ready(function(){
         });
     });
     
+    $('#regionTextext').textext({ plugins: 'tags' });
+
+    $('#addToTextext').bind('click', function(e)
+    {
+            $('#regionTextext').textext()[0].tags().addTags([ $('#region').val() ]);
+            $('#region').val('');
+            console.log("here");
+    });
     /*$('#region').textext({
         plugins : 'tags prompt focus autocomplete ajax arrow',
         tagsItems : [ 'Basic', 'JavaScript', 'PHP', 'Scala' ],
@@ -125,13 +133,17 @@ $(document).ready(function(){
             headers : {"Api-Key": "1234"},
 
             success : function(data){
-                data = JSON.parse(data);
-                //console.log(data);
-                $("#vendorList").empty();
-                $("#vendorList").append("<option value='0'>-Select-</option>");
-                data.data.map(function(category){
-                    $("#vendorList").append("<option value='" + category.id + "'>" + category.name + "</options>");
-                });
+                try{
+                    data = JSON.parse(data);
+                    //console.log(data);
+                    $("#vendorList").empty();
+                    $("#vendorList").append("<option value='0'>-Select-</option>");
+                    data.data.map(function(category){
+                        $("#vendorList").append("<option value='" + category.id + "'>" + category.name + "</options>");
+                    });
+                }catch(ex){
+                    console.log("Exception Occured. Try Again.");
+                }
             },
 
             error : function(XMLHttpRequest, textStatus, errorThrown){ 
@@ -204,6 +216,7 @@ $(document).ready(function(){
                 else{
                     $(form_id + "_danger").text("Error Code #" + response.message.Code + ", " + response.message.Title);
                 }
+                $("html, body").animate({ scrollTop: 0 }, "slow");
                 $(form_id + "input[type='reset']").trigger("click");
             },
            
