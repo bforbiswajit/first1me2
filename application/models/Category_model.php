@@ -72,6 +72,10 @@ class Category_model extends CI_Model
             $data[$i]->pseudoSubscriptionCount = $allCategory[$i]->getPseudosubscriptioncount();
             
             $data[$i]->subscribed = in_array($allCategory[$i]->getId(), self::getSubscribedCategoryIds($userId));
+            
+            $allDeals = $this->doctrine->em->getRepository('Entities\Deals')->findBy(array("categoryid" => $allCategory[$i]->getId()));
+            $data[$i]->dealCount = count($allDeals);
+            $data[$i]->iconUrl = "/public/images/category/". $allCategory[$i]->getId() . ".png";
         }
         
         if(isset($data) && count($data) > 0)
