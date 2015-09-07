@@ -19,7 +19,7 @@ class Admin_model extends CI_Model
         if(($user = $this->em->getRepository('Entities\Admin')->findOneBy(array("email" => $email))) == NULL)
             return array("status" => "error", "message" => array("Title" => "Invalid Email.", "Code" => "503"));
 
-        if(crypt($password, strlen($email)) != $user->getPassword())
+        if(md5($password) != $user->getPassword())
             return array("status" => "error", "message" => array("Title" => "Email/Password mismatch. Try again", "Code" => "401"));
         else{
             $_SESSION['adminId'] = $user->getId();

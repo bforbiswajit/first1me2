@@ -33,7 +33,7 @@ class User_model extends CI_Model
         $user->setCountry($country);
         $user->setState($state);
         $user->setCity($city);
-        $user->setPassword(crypt($password, strlen($email)));
+        $user->setPassword(md5($password));
         $user->setFbstatus($fbStatus);
         $user->setRegisteredon(new \DateTime("now"));
         //var_dump($user);exit;
@@ -75,7 +75,7 @@ class User_model extends CI_Model
         
         if($thisUser != NULL)
         {
-            if(crypt($password, strlen($email)) == $thisUser->getPassword())
+            if(md5($password) == $thisUser->getPassword())
             {
                 $profile['firstName'] = $thisUser->getFirstname();
                 $profile['lastName'] = $thisUser->getLastname();
@@ -114,9 +114,9 @@ class User_model extends CI_Model
         if($thisUser != NULL)
         {
             if($oldPassword != ""){     //Change Password
-                if(crypt($oldPassword, strlen($email)) == $thisUser->getPassword())
+                if(md5($oldPassword) == $thisUser->getPassword())
                 {
-                    $cryptedPassword = crypt($newPassword, strlen($email));
+                    $cryptedPassword = md5($newPassword);
                     $this->db->update('user',array("password" => $cryptedPassword), array("id" => $thisUser->getId()));
                 }
                 else
@@ -124,7 +124,7 @@ class User_model extends CI_Model
             }
             else{                       //Forget Password
                 $newPassword = chr(rand(97,122)) . chr(rand(97,122)) . chr(rand(97,122)) . rand(0,9) . rand(0,9) . rand(0,9);
-                $cryptedPassword = crypt($newPassword, strlen($email));
+                $cryptedPassword = md5($newPassword);
                 $this->db->update('user',array("password" => $cryptedPassword), array("id" => $thisUser->getId()));
             }
             
