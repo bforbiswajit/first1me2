@@ -1,18 +1,5 @@
 $(document).ready(function(){
     var BASE_URL = "../index.php";                                              //cloud
-    //var BASE_URL = "../first1me2/index.php";                                  //home
-    
-    $(function(){
-        $("#example1").dataTable();
-        $('#dealTableTable').dataTable({
-          "bPaginate": true,
-          "bLengthChange": false,
-          "bFilter": false,
-          "bSort": true,
-          "bInfo": true,
-          "bAutoWidth": false
-        });
-    });
     
     $('#regionTextext').textext({ plugins: 'tags' });
 
@@ -21,16 +8,6 @@ $(document).ready(function(){
             $('#regionTextext').textext()[0].tags().addTags([ $('#region').val() ]);
             $('#region').val('');
     });
-    /*$('#region').textext({
-        plugins : 'tags prompt focus autocomplete ajax arrow',
-        tagsItems : [ 'Basic', 'JavaScript', 'PHP', 'Scala' ],
-        prompt : 'Add one...',
-        ajax : {
-            url : '/Places/GetCities',
-            dataType : 'json',
-            cacheResults : true
-        }
-    });*/
     
     function getStatusButton(status){
         if(status == 0)
@@ -55,10 +32,16 @@ $(document).ready(function(){
                 data = JSON.parse(data);
                 if(data.status == "success"){
                     //console.log(data);
+                    if(BASE_URL.indexOf("index.php") > -1)
+                        var imagePath = BASE_URL.substring(0, BASE_URL.indexOf("/index.php"));
+                    else
+                        var imagePath = BASE_URL;
+                    
                     $("#editDealModal #name").val(data.data.name);
                     $("#editDealModal #shortDesc").val(data.data.shortDesc);
                     $("#editDealModal #longDesc").val(data.data.longDesc);
                     $("#editDealModal #pseudoViews").val(data.data.pseudoViews);
+                    $("#editDealModal #dealImg").attr("src", imagePath + data.data.bigImg);
                     $("#editDealModal #region").val(data.data.region);
                     
                     var now = new Date(data.data.expiresOn.date.substring(0,data.data.expiresOn.date.indexOf(' ')));
@@ -93,6 +76,8 @@ $(document).ready(function(){
                 data.data.deals.map(function(deal){
                     $("#dealTable").append("<tr id='" + deal.id + "'><td>" + "<img src='" + imagePath + deal.thumbnailImg + "' width = '30px' height = '30px'>" + "</td><td>" + deal.name + "</td><td>" + deal.category + "</td><td>" + deal.region + "</td><td>" + deal.views + "</td><td>" + deal.expiresOn.date.substring(0,deal.expiresOn.date.indexOf(' ')) + "</td><td>" + getStatusButton(deal.status) + "</td></tr>");
                 });
+                
+                $("#dealListing").DataTable();
             },
            
             error : function(XMLHttpRequest, textStatus, errorThrown){ 

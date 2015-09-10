@@ -253,7 +253,7 @@ class Deals_model extends CI_Model
             $data->pseudoViews = $deal->getPseudoviews();
             $region = $this->doctrine->em->getRepository('Entities\DealRegion')->findBy(array("dealid" => $deal));
             $deal->region = count($region); //populate DealRegion table first
-            //$data->region = $deal->getRegion();
+            $data->bigImg = $deal->getBigimg();
             $data->expiresOn = $deal->getExpireson();
             $data->status = $deal->getStatus();
             
