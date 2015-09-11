@@ -122,6 +122,16 @@ class Deals extends CI_Controller
             {
                 $updateFields["longDesc"] = $longDesc;
             }
+            
+            if(preg_match("/[0-9]{1,10}/", $pseudoViews = isset($_POST['pseudoViews']) ? intval(trim($_POST['pseudoViews'])) : "") != 0)
+            {
+                $updateFields["pseudoViews"] = $pseudoViews;
+            }
+            
+            if(preg_match("/[0-9]{1}/", $status = isset($_POST['status']) ? intval(trim($_POST['status'])) : "") != 0)
+            {
+                $updateFields["status"] = $status;
+            }
 
             if(is_array($updateFields) && count($updateFields) > 0)
             {

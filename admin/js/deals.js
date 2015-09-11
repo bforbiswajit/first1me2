@@ -48,13 +48,25 @@ $(document).ready(function(){
                     else
                         var imagePath = BASE_URL;
                     
+                    $("#editDealModal #dealId").val(data.data.id);
                     $("#editDealModal #name").val(data.data.name);
                     $("#editDealModal #shortDesc").val(data.data.shortDesc);
                     $("#editDealModal #longDesc").val(data.data.longDesc);
                     $("#editDealModal #pseudoViews").val(data.data.pseudoViews);
+                    $("#editDealModal #bigImg").val("");
                     $("#editDealModal #dealImg").attr("src", imagePath + data.data.bigImg);
                     $("#editDealModal #region").val(data.data.region);
                     $("#editDealModal .deleteDealBtn").attr("id", data.data.id);
+                    console.log(data.data.status);
+                    $("#editDealModal input[type=radio][name=status][value=" + data.data.status + "]").prop("checked", true);
+                    if(data.data.status == 1){
+                        $("#activeCheck").show();
+                        $("#suspendCheck").hide();
+                    }
+                    else{
+                        $("#activeCheck").hide();
+                        $("#suspendCheck").show();
+                    }
                     
                     var now = new Date(data.data.expiresOn.date.substring(0,data.data.expiresOn.date.indexOf(' ')));
                     var day = ("0" + now.getDate()).slice(-2);
@@ -192,6 +204,7 @@ $(document).ready(function(){
     
     $("form").submit(function(event){	//GENERIC form submit function
 	event.preventDefault();
+        $("div[class=modal]").modal("dismiss");
         var form_id = "#" + $(this).closest("form").attr("id");
 	var form_data = new FormData(this);
 	//var form_data = $(this).serialize();
