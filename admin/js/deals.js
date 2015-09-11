@@ -5,8 +5,8 @@ $(document).ready(function(){
 
     $('#addToTextext').bind('click', function(e)
     {
-            $('#regionTextext').textext()[0].tags().addTags([ $('#region').val() ]);
-            $('#region').val('');
+        $('#regionTextext').textext()[0].tags().addTags([ $('#region').val() ]);
+        $('#region').val('');
     });
     
     function getStatusButton(status){
@@ -19,6 +19,17 @@ $(document).ready(function(){
         if(status == 3)
             return "<span class='label label-primary'>Hidden</span>";
     }
+    
+    $("#editDealModal input[type=radio][name=status]").change(function(){
+        if($(this).val() == 1){
+            $("#activeCheck").show();
+            $("#suspendCheck").hide();
+        }
+        else{
+            $("#activeCheck").hide();
+            $("#suspendCheck").show();
+        }
+    });
     
     $("#dealTable").on("click", "tr", function(){
         //console.log("clicked" + $(this).attr("id"));
@@ -78,12 +89,13 @@ $(document).ready(function(){
                     $("#dealTable").append("<tr id='" + deal.id + "'><td>" + "<img src='" + imagePath + deal.thumbnailImg + "' width = '30px' height = '30px'>" + "</td><td>" + deal.name + "</td><td>" + deal.category + "</td><td>" + deal.region + "</td><td>" + deal.views + "</td><td>" + deal.expiresOn.date.substring(0,deal.expiresOn.date.indexOf(' ')) + "</td><td>" + getStatusButton(deal.status) + "</td></tr>");
                 });
                 
-                $("#dealListing").DataTable();
+                var tmp = $("#dealListing").DataTable();
+                tmp.draw();
             },
            
             error : function(XMLHttpRequest, textStatus, errorThrown){ 
                 console.log("Status: " + textStatus + ", Error: " + errorThrown); 
-            }  
+            }
         });
     }
     dealStat();
@@ -199,11 +211,13 @@ $(document).ready(function(){
                 response = JSON.parse(data);
                 if(response.status == "success"){
                     //console.log(response.data[0]);
-                    $(form_id + "_success").text(response.data[0]).fadeIn(2000);
+                    $(form_id + "_success span").empty().text(response.data[0]);
+                    $(form_id + "_success").fadeIn(2000)
                     dealStat();
                 }
                 else{
-                    $(form_id + "_danger").text("Error Code #" + response.message.Code + ", " + response.message.Title).fadeIn(2000);
+                    $(form_id + "_danger span").empty().text("Error Code #" + response.message.Code + ", " + response.message.Title);
+                    $(form_id + "_danger").fadeIn(2000)
                 }
                 $("html, body").animate({ scrollTop: 0 }, "slow");
                 $(form_id + "input[type='reset']").trigger("click");
@@ -226,18 +240,20 @@ $(document).ready(function(){
                 //console.log(data);
                 if(response.status == "success"){
                     $("html, body").animate({ scrollTop: 0 }, "slow");
-                    $("dealsAddForm_success").text(response.data[0]).fadeIn(1000);
+                    $("dealsAddForm_success span").text(response.data[0]).show();
+                    dealStat();
+                    console.log("deleted ", $(this).attr("id"));
                 }
                 else{
                     $("html, body").animate({ scrollTop: 0 }, "slow");
-                    $("dealsAddForm_danger").text("Error Code #" + response.message.Code + ", " + response.message.Title).fadeIn(2000);
+                    $("dealsAddForm_danger span").text("Error Code #" + response.message.Code + ", " + response.message.Title).show();
+                    console.log("error while deleting", response);
                 }
             },
 
             error : function(XMLHttpRequest, textStatus, errorThrown){
                 console.log("Status: " + textStatus + ", Error: " + errorThrown); 
-            }  
+            }
         });
-        console.log("deleted ", $(this).attr("id"));
     });
 });
