@@ -19,11 +19,11 @@ class Deals_model extends CI_Model
     //-----Helper functions
     private function isSeen($dealId)
     {
-        return ($this->doctrine->em->getRepository('Entities\Seen')->findBy(array('dealId' => $dealId)) == null) ? FALSE : TRUE;
+        return ($this->em->getRepository('Entities\Seen')->findBy(array('dealId' => $dealId)) == null) ? FALSE : TRUE;
     }
     
     private function getSeenDealIds($userId){
-        $seenDeals =  $this->doctrine->em->getRepository('Entities\Seen')->findBy(array('userid' => $userId));
+        $seenDeals =  $this->em->getRepository('Entities\Seen')->findBy(array('userid' => $userId));
         if($seenDeals == NULL || !is_array($seenDeals))
             return array();
         for($i = 0; $i < count($seenDeals); $i++)
@@ -180,7 +180,7 @@ class Deals_model extends CI_Model
     }
     
     public function DemoGCM($email){
-        $device = $this->doctrine->em->getRepository('Entities\User')->findOneBy(array('email' => $email));
+        $device = $this->em->getRepository('Entities\User')->findOneBy(array('email' => $email));
         
         $data = array(
                         "title" => "Test GCM Notification",
@@ -218,7 +218,7 @@ class Deals_model extends CI_Model
     }
     
     public function ReadUserDeals($userId){
-        if(($user = $this->doctrine->em->getRepository('Entities\User')->find($userId)) == NULL)
+        if(($user = $this->em->getRepository('Entities\User')->find($userId)) == NULL)
             return array("status" => "error", "message" => array("Title" => "Invalid User ID.", "Code" => "503"));
         $con = $this->em->getConnection();
         //$query = $con->prepare("SELECT deals.id, deals.name, deals.categoryId, deals.vendorId, deals.createdOn, deals.thumbnailImg, deals.bigImg, deals.shortDesc, deals.longDesc, deals.likes, deals.views, deals.pseudoViews, deals.expiresOn, deals.status from deals INNER JOIN category ON deals.categoryId = category.id WHERE category.id IN (SELECT categoryId FROM subscriptions WHERE userId = $userId) And deals.status = 1 And deals.expiresOn >= CURDATE()");
@@ -251,7 +251,7 @@ class Deals_model extends CI_Model
             $data->shortDesc = $deal->getShortdesc();
             $data->longDesc = $deal->getLongdesc();
             $data->pseudoViews = $deal->getPseudoviews();
-            $region = $this->doctrine->em->getRepository('Entities\DealRegion')->findBy(array("dealid" => $deal));
+            $region = $this->em->getRepository('Entities\DealRegion')->findBy(array("dealid" => $deal));
             $deal->region = count($region); //populate DealRegion table first
             $data->bigImg = $deal->getBigimg();
             $data->expiresOn = $deal->getExpireson();
@@ -264,16 +264,16 @@ class Deals_model extends CI_Model
     }
     
     public function UpdateSeen($userId, $dealId){
-        if(($user = $this->doctrine->em->getRepository('Entities\User')->find($userId)) == NULL)
+        if(($user = $this->em->getRepository('Entities\User')->find($userId)) == NULL)
             return array("status" => "error", "message" => array("Title" => "Invalid User ID.", "Code" => "503"));
         
-        if(($deal = $this->doctrine->em->getRepository('Entities\Deals')->find($dealId)) == NULL)
+        if(($deal = $this->em->getRepository('Entities\Deals')->find($dealId)) == NULL)
             return array("status" => "error", "message" => array("Title" => "Invalid Deal ID.", "Code" => "503"));
         
         //implement - mark as seen + view count for each deal
         
         //incrementing view count
-        //$theDeal = $this->doctrine->em->getRepository('Entities\Deals')->find($dealId);
+        //$theDeal = $this->em->getRepository('Entities\Deals')->find($dealId);
         $currentView = $deal->getViews();
         try
         {
@@ -285,7 +285,7 @@ class Deals_model extends CI_Model
         }
         
         //implementing mark as seen
-        if($this->doctrine->em->getRepository('Entities\Seen')->findOneBy(array("userid" => $userId, "dealid" => $dealId)) == NULL)
+        if($this->em->getRepository('Entities\Seen')->findOneBy(array("userid" => $userId, "dealid" => $dealId)) == NULL)
         {
             $seen = new Entities\Seen;
             try
@@ -294,7 +294,7 @@ class Deals_model extends CI_Model
                 $seen->setDealid($deal);
                 $seen->setFavourite(0);
                 $seen->setRating(0);
-                //$seen->setDealid($this->doctrine->em->getRepository('Entities\Deals')->find($category));
+                //$seen->setDealid($this->em->getRepository('Entities\Deals')->find($category));
 
                 $this->em->persist($seen);
                 $this->em->flush();
@@ -310,13 +310,13 @@ class Deals_model extends CI_Model
     }
     
     public function UpdateFavourite($userId, $dealId, $favourite){
-        if(($user = $this->doctrine->em->getRepository('Entities\User')->find($userId)) == NULL)
+        if(($user = $this->em->getRepository('Entities\User')->find($userId)) == NULL)
             return array("status" => "error", "message" => array("Title" => "Invalid User ID.", "Code" => "503"));
         
-        if(($deal = $this->doctrine->em->getRepository('Entities\Deals')->find($dealId)) == NULL)
+        if(($deal = $this->em->getRepository('Entities\Deals')->find($dealId)) == NULL)
             return array("status" => "error", "message" => array("Title" => "Invalid Deal ID.", "Code" => "503"));
         
-        if(($seen = $this->doctrine->em->getRepository('Entities\Seen')->findOneBy(array("userid" => $userId, "dealid" => $dealId))) == NULL)
+        if(($seen = $this->em->getRepository('Entities\Seen')->findOneBy(array("userid" => $userId, "dealid" => $dealId))) == NULL)
             return array("status" => "error", "message" => array("Title" => "Deal not seen yet.", "Code" => "503"));
         
         try
@@ -325,9 +325,24 @@ class Deals_model extends CI_Model
         }
         catch(Exception $exc)
         {
-            return array("status" => "error", "message" => array("Title" => "Error while adding to favourite.", "Code" => "503"));
+            return array("status" => "error", "message" => array("Title" => "Error while adding to favourite.", "Code" => "500"));
         }
         
         return array("status" => "success", "data" => array("Deal Favourite Status Updated."));
+    }
+    
+    public function Delete($dealId){
+        if(($deal = $this->em->getRepository('Entities\Deals')->find($dealId)) == NULL)
+            return array("status" => "error", "message" => array("Title" => "Invalid Deal ID.", "Code" => "503"));
+        try{
+            //$deal = $this->em->getReference('model\Deals', $dealId);
+            $this->em->remove($deal);
+            $this->em->flush();
+            return array("status" => "success", "data" => array("Deal Deleted Successfully."));
+        }
+        catch(Exception $exc)
+        {
+            return array("status" => "error", "message" => array("Title" => "Error while Deleting Deal, Please try after sometime.$exc", "Code" => "500"));
+        }
     }
 }

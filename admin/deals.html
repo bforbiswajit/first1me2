@@ -257,14 +257,14 @@
                                         </div><br/>
                                         <div class="btn-group" data-toggle="buttons">
                                             <label class="btn btn-primary active">
-                                                <input type="radio" value="1" name="status" autocomplete="off" checked> Activate
+                                                <input type="radio" value="1" name="status" autocomplete="off" checked> <i class="fa fa-check-square-o" style="color: white;"></i>&nbsp;Activate
                                             </label>
                                             <label class="btn btn-default">
-                                                <input type="radio" value="0" name="status" autocomplete="off"> Deactivate
+                                                <input type="radio" value="0" name="status" autocomplete="off"> <i class="fa fa-check-square-o" style="color: white;"></i>&nbsp;Deactivate
                                             </label>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-danger" onclick="confirm('Are you sure to permanently delete this deal?')">Delete</button>
+                                            <button type="button" class="btn btn-danger deleteDealBtn" data-dismiss="modal" onclick="confirm('Are you sure to permanently delete this deal?')">Delete</button>
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                             <button type="submit" class="btn btn-primary">Save changes</button>
                                         </div>

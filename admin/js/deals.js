@@ -43,6 +43,7 @@ $(document).ready(function(){
                     $("#editDealModal #pseudoViews").val(data.data.pseudoViews);
                     $("#editDealModal #dealImg").attr("src", imagePath + data.data.bigImg);
                     $("#editDealModal #region").val(data.data.region);
+                    $("#editDealModal .deleteDealBtn").attr("id", data.data.id);
                     
                     var now = new Date(data.data.expiresOn.date.substring(0,data.data.expiresOn.date.indexOf(' ')));
                     var day = ("0" + now.getDate()).slice(-2);
@@ -212,5 +213,31 @@ $(document).ready(function(){
                 console.log("Status: " + textStatus + ", Error: " + errorThrown); 
             }
         });
+    });
+    
+    $(".deleteDealBtn").on("click", function(){
+        $.ajax({
+            url : BASE_URL + "/Deals/DeleteThis",
+            type : "POST",
+            headers : {"Api-Key": "1234"},
+            data : {"dealId" : $(this).attr("id")},
+            success : function(data){
+                response = JSON.parse(data);
+                //console.log(data);
+                if(response.status == "success"){
+                    $("html, body").animate({ scrollTop: 0 }, "slow");
+                    $("dealsAddForm_success").text(response.data[0]).fadeIn(1000);
+                }
+                else{
+                    $("html, body").animate({ scrollTop: 0 }, "slow");
+                    $("dealsAddForm_danger").text("Error Code #" + response.message.Code + ", " + response.message.Title).fadeIn(2000);
+                }
+            },
+
+            error : function(XMLHttpRequest, textStatus, errorThrown){
+                console.log("Status: " + textStatus + ", Error: " + errorThrown); 
+            }  
+        });
+        console.log("deleted ", $(this).attr("id"));
     });
 });

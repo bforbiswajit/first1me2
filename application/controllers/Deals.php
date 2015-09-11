@@ -197,4 +197,15 @@ class Deals extends CI_Controller
         $this->load->model('Deals_model');
         echo json_encode($this->Deals_model->UpdateFavourite($userId, $dealId, $favourite));
     }
+    
+    public function DeleteThis(){
+        if(preg_match("/[0-9]{1,10}/", $dealId = isset($_POST['dealId']) ? intval(trim($_POST['dealId'])) : "") == 0)
+        {
+            echo json_encode(array("status" => "error", "message" => array("Title" => "Invalid Deal ID.", "Code" => "400")));
+            exit;
+        }
+        
+        $this->load->model('Deals_model');
+        echo json_encode($this->Deals_model->Delete($dealId));
+    }
 }
