@@ -15,9 +15,6 @@ class Category extends CI_Controller
     }
     
     public function Add(){
-        /*echo $this->input->post('displayName');
-        print_r($_POST);
-        echo "displayName = " . $this->input->post('displayName') . ".\n";*/
         if(preg_match("/^\w[a-zA-Z0-9\-\_\.\,\s\\\]{1,30}/", $displayName = isset($_POST['displayName']) ? trim($_POST['displayName']) : "") == 0)
         {
             echo json_encode(array("status" => "error", "message" => array("Title" => "Invalid Display Name.", "Code" => "400")));
@@ -33,6 +30,12 @@ class Category extends CI_Controller
         if(preg_match("/^\w[a-zA-Z0-9\-\_\.\,\s\\\]{1,}/", $longDesc = isset($_POST['longDesc']) ? trim($_POST['longDesc']) : "") == 0)
         {
             echo json_encode(array("status" => "error", "message" => array("Title" => "Invalid Long Description.", "Code" => "400")));
+            exit;
+        }
+        
+        if(!isset($_FILES['categoryImg']))
+        {
+            echo json_encode(array("status" => "error", "message" => array("Title" => "Invalid Category Image Link.", "Code" => "400")));
             exit;
         }
         

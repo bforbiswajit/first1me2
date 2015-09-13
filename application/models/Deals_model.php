@@ -208,6 +208,36 @@ class Deals_model extends CI_Model
         $deal = new Entities\Deals;
         try
         {
+            if(isset($_FILES['dealImg'])){
+                $pic = explode('.', $_FILES['dealImg']['name']);
+
+                $config['upload_path'] = 'public/images/deal/big';
+                $config['allowed_types'] = 'gif|jpeg|jpg|png';
+                $config['max_size']	= '50000';
+                $config['overwrite'] = true;
+                $config['file_name'] = $dealId . "." .$pic[count($pic)-1];
+
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+
+                if(!$this->upload->do_upload('dealImg')){
+                    //return 'error '.$this->upload->display_errors();
+                    return array("status" => "error", "message" => array("Title" => "Failed to upload Image.", "Code" => "404"));
+                }
+                else{
+                    $data = $this->upload->data();
+                    $thumb_url  = $big_url = '/public/images/deal/big/' . $data['file_name'];
+
+                    $image = new ImageResize('public/images/deal/big/'.$data['file_name']);
+                    $image->scale(20);
+                    $image->save('public/images/deal/thumb/'.$data['file_name']);
+                    $thumb_url = '/public/images/deal/thumb/' . $data['file_name'];
+
+                    $updateFields["thumbnailImg"] = $thumb_url;
+                    $updateFields["bigImg"] = $big_url;
+                }
+            }
+            
             $this->db->update('deals', $updateFields, array("id" => $dealId));
             return array("status" => "success", "data" => array("Deal Updated Successfully."));
         }
@@ -227,16 +257,16 @@ class Deals_model extends CI_Model
                                 INNER JOIN deal_region ON deals.id = deal_region.dealId
                                 WHERE category.id IN (SELECT categoryId FROM subscriptions WHERE userId = $userId)
                                 And deals.status = 1
+                                And category.status = 1
                                 And deals.expiresOn >= CURDATE()
                                 And deal_region.city = (SELECT city from user where id = $userId)
                                 And deal_region.state = (SELECT state from user where id = $userId)
-                                And deal_region.country = (SELECT country from user where id = $userId)
-                                And deals.expiresOn >= CURDATE()");
+                                And deal_region.country = (SELECT country from user where id = $userId)");
         $query->execute();
         $data = $query->fetchAll();
         
         if(isset($data) && count($data) > 0)
-            return array("status" => "success", "data" =>$data);
+            return array("status" => "success", "data" =>$data, "totalDeals" => count($data));
         else
             return array("status" => "error", "message" => array("Title" => "No Data Found.", "Code" => "200"));
     }

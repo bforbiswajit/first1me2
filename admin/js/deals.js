@@ -53,8 +53,8 @@ $(document).ready(function(){
                     $("#editDealModal #shortDesc").val(data.data.shortDesc);
                     $("#editDealModal #longDesc").val(data.data.longDesc);
                     $("#editDealModal #pseudoViews").val(data.data.pseudoViews);
-                    $("#editDealModal #bigImg").val("");
-                    $("#editDealModal #dealImg").attr("src", imagePath + data.data.bigImg);
+                    $("#editDealModal #dealImg").val("");
+                    $("#editDealModal #displayImg").attr("src", imagePath + data.data.bigImg);
                     $("#editDealModal #region").val(data.data.region);
                     $("#editDealModal .deleteDealBtn").attr("id", data.data.id);
                     console.log(data.data.status);

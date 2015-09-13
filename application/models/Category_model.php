@@ -41,16 +41,39 @@ class Category_model extends CI_Model
         $category->setStatus($status);
         $category->setPseudosubscriptioncount($pseudoSubscriptionCount);
         
-        try
-        {
-            $this->em->persist($category);
-            $this->em->flush();
-            return array("status" => "success", "data" => array("Category Added Successfully."));
+        if(isset($_FILES['categoryImg']) && $_FILES['categoryImg']['size'] <= 50000){
+            try
+            {
+                $this->em->persist($category);
+                $this->em->flush();
+            }
+            catch(Exception $exc)
+            {
+                return array("status" => "error", "message" => array("Title" => $exc->getTraceAsString(), "Code" => "503"));
+            }
+            
+            $pic = explode('.', $_FILES['categoryImg']['name']);
+
+            $config['upload_path'] = 'public/images/category';
+            $config['allowed_types'] = 'gif|jpeg|jpg|png';
+            $config['max_size']	= '50000';
+            $config['overwrite'] = true;
+            $config['file_name'] = $category->getId() . "." .$pic[count($pic)-1];
+
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if(!$this->upload->do_upload('categoryImg')){
+                //return 'error '.$this->upload->display_errors();
+                return array("status" => "error", "message" => array("Title" => "Failed to upload Image.", "Code" => "404"));
+            }
+            else{
+                $data = $this->upload->data();
+                return array("status" => "success", "data" => array("Category Added Successfully."));
+            }
         }
-        catch(Exception $exc)
-        {
-            return array("status" => "error", "message" => array("Title" => $exc->getTraceAsString(), "Code" => "503"));
-        }
+        else
+            return array("status" => "error", "message" => array("Title" => "Failed to add Category. Image size must be below 50KB.", "Code" => "400"));
     }
     
     
@@ -73,7 +96,20 @@ class Category_model extends CI_Model
             
             $data[$i]->subscribed = in_array($allCategory[$i]->getId(), self::getSubscribedCategoryIds($userId));
             
-            $allDeals = $this->doctrine->em->getRepository('Entities\Deals')->findBy(array("categoryid" => $allCategory[$i]->getId()));
+            $allDeals = $this->em->getRepository('Entities\Deals')->findBy(array("categoryid" => $allCategory[$i]->getId(), "status" => 1));
+            $con = $this->em->getConnection();
+            $query = $con->prepare("SELECT deals.id
+                                    from deals INNER JOIN category ON deals.categoryId = category.id
+                                    INNER JOIN deal_region ON deals.id = deal_region.dealId
+                                    WHERE category.id = {$allCategory[$i]->getId()}
+                                    And deals.status = 1
+                                    And category.status = 1
+                                    And deals.expiresOn >= CURDATE()
+                                    And deal_region.city = (SELECT city from user where id = $userId)
+                                    And deal_region.state = (SELECT state from user where id = $userId)
+                                    And deal_region.country = (SELECT country from user where id = $userId)");
+            $query->execute();
+            $allDeals = $query->fetchAll();
             $data[$i]->dealCount = count($allDeals);
             $data[$i]->iconUrl = "/public/images/category/". $allCategory[$i]->getId() . ".png";
         }
