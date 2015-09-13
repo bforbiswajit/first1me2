@@ -25,6 +25,8 @@ $(document).ready(function(){
                 data.data.users.map(function(user){
                     $("#userTable").append("<tr id='" + user.id + "'><td>" + user.firstName + " " + user.lastName + "</td><td>" + user.mobile + "</td><td>" + user.email + "</td><td>" + user.city + "</td><td>" + user.os + "</td><td>" + user.subscribed + "</td></tr>");
                 });
+                
+                $("#userDisplayTable").DataTable();
             },
            
             error : function(XMLHttpRequest, textStatus, errorThrown){ 

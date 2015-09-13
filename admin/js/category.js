@@ -25,6 +25,8 @@ $(document).ready(function(){
                 data.data.map(function(category){
                     $("#categoryTable").append("<tr id='" + category.id + "'><td>" + category.displayName + "</td><td>" + category.createdOn.date.substring(0,category.createdOn.date.indexOf(' ')) + "</td><td>" + category.subscribed + "</td><td>" + category.deals + "</td><td>" + category.totalViews + "</td><td>" + getStatusButton(category.status) + "</td></tr>");
                 });
+                
+                $("#categoryDisplayTable").DataTable();
             },
             error : function(XMLHttpRequest, textStatus, errorThrown){ 
                 console.log("Status: " + textStatus + ", Error: " + errorThrown); 
